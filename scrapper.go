@@ -3,13 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
 )
 
 type Deposit struct {
 	Pubkey string
-	//Withdrawal_credentials string
-	//Signature              string
-	//Deposit_data_root      string
+	//withdrawal_credentials string
+	//signature              string
+	//deposit_data_root      string
 }
 
 func main() {
@@ -36,8 +38,22 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	f, err2 := os.Create("dep.txt")
+
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+
+	defer f.Close()
+
+	//fmt.Println(len(deposit))
 
 	for i := range deposit {
-		fmt.Println(deposit[i].pubkey)
+		_, err3 := f.WriteString(deposit[i].Pubkey)
 	}
+	if err3 != nil {
+		log.Fatal(err3)
+	}
+
+	fmt.Println("done")
 }
